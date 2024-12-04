@@ -1,7 +1,6 @@
+<h1 align="center">ZigZag</h1><br>
 <div align="center">
-  
-# ZigZag
-<img src="https://play-lh.googleusercontent.com/6pyha8P40IH8Yn7ets-yr-sDmze-lif7Lh80ZMffdBojvhAtGTk88zHru3UHeipNhA" width="300"><br>
+<img src="https://play-lh.googleusercontent.com/6pyha8P40IH8Yn7ets-yr-sDmze-lif7Lh80ZMffdBojvhAtGTk88zHru3UHeipNhA" width="300" /><br>
 </div>
 
 ## Depedencies
