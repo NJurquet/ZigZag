@@ -7,6 +7,24 @@ import win32ui
 class ScreenCapture:
     @staticmethod
     def capture_window(window_name: str) -> np.ndarray:
+        """
+        Captures the window with the specified name and returns an usable numpy array of the image.
+
+        Parameters
+        ----------
+        `window_name` : `str`
+            The name of the window to capture.
+
+        Returns
+        -------
+        `np.ndarray`
+            The captured window as a continguous numpy array.
+
+        Raises
+        ------
+        `ValueError`
+            If the window with the specified name is not found.
+        """
         # Make the program DPI aware to prevent scaling issues & capture
         # hardware accelerated windows (e.g. Chrome, Windows Calculator)
         # https://stackoverflow.com/questions/76373625/pywin32-cannot-capture-certain-windows-giving-black-screen-python-windows
@@ -15,7 +33,7 @@ class ScreenCapture:
         hwnd = win32gui.FindWindow(None, window_name)
         # hwnd = win32gui.GetDesktopWindow()
         if not hwnd:
-            raise Exception(f"Window '{window_name}' not found")
+            raise ValueError(f"Window '{window_name}' not found")
 
         # Get window dimensions
         # Equivalent to "win32gui.GetWindowRect(hwnd)" for DPI
@@ -53,6 +71,9 @@ class ScreenCapture:
     # https://stackoverflow.com/questions/55547940/how-to-get-a-list-of-the-name-of-every-open-window
     @staticmethod
     def list_window_names():
+        """
+        Prints all open window names and handles.
+        """
         def winEnumHandler(hwnd, ctx):
             if win32gui.IsWindowVisible(hwnd):
                 print(hex(hwnd), win32gui.GetWindowText(hwnd))
