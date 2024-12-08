@@ -6,7 +6,7 @@ from detection import Detector
 
 def main():
     while True:
-        frame = ScreenCapture.capture_window("Zig Zag")
+        frame = ScreenCapture.capture_window("BlueStacks App Player")
         Detector.detect_ball(frame)
         Detector.detect_path_edges(frame)
 
