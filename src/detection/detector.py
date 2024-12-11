@@ -3,7 +3,7 @@ import cv2
 
 class Detector:
     @staticmethod
-    def detect_ball(frame) -> list:
+    def detect_ball(frame) -> tuple[int, int, int]:
         ...
 
     @staticmethod

@@ -12,11 +12,11 @@ def main():
     loop_time = time()
     while True:
         frame = ScreenCapture.capture_window(WINDOW_NAME)
-        circles = Detector.detect_ball(frame)
+        x, y, r = Detector.detect_ball(frame)
         lines = Detector.detect_path_edges(frame)
 
         if VISION_EN:
-            DrawingManager.draw_ball(frame, circles)
+            DrawingManager.draw_ball(frame, x, y, r)
             DrawingManager.draw_path_edges(frame, lines)
 
             # Compute and display FPS
