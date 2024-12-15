@@ -9,6 +9,8 @@ from config import Align
 
 
 class ScreenCapture:
+    user32 = windll.user32
+
     @staticmethod
     def capture_window(window_name: str) -> np.ndarray:
         """
@@ -32,7 +34,7 @@ class ScreenCapture:
         # Make the program DPI aware to prevent scaling issues & capture
         # hardware accelerated windows (e.g. Chrome, Windows Calculator)
         # https://stackoverflow.com/questions/76373625/pywin32-cannot-capture-certain-windows-giving-black-screen-python-windows
-        windll.user32.SetProcessDPIAware()
+        ScreenCapture.user32.SetProcessDPIAware()
 
         hwnd = ScreenCapture.find_window(window_name)
 
@@ -52,7 +54,7 @@ class ScreenCapture:
 
         # Captures the window image
         # If Special K is running, this number is 3. If not, 1
-        result = windll.user32.PrintWindow(hwnd, comp_dc.GetSafeHdc(), 3)
+        result = ScreenCapture.user32.PrintWindow(hwnd, comp_dc.GetSafeHdc(), 3)
 
         # Convert window to numpy array
         bmp_str = bitmap.GetBitmapBits(True)
@@ -113,7 +115,7 @@ class ScreenCapture:
             The dimensions of the window in the order: left, top, right, bottom, width, height.
         """
         # Equivalent to "win32gui.GetWindowRect(hwnd)" for DPI
-        left, top, right, bottom = win32gui.GetClientRect(hwnd)
+        left, top, right, bottom = win32gui.GetWindowRect(hwnd)
         width = right - left
         height = bottom - top
         return left, top, right, bottom, width, height
@@ -128,7 +130,7 @@ class ScreenCapture:
         `window_name` : `str`
             The name of the window to set the size of.
         `target_height` : `int`
-            The target height of the window.
+            The target height of the window in pixels.
         `align` : `Align`, optional
             Window alignment relative to the screen. If set to `Align.NONE`, the window will keep its current position, by default `Align.NONE`
 
@@ -137,26 +139,41 @@ class ScreenCapture:
         ValueError
             If the specified alignment is invalid.
         """
-        hwnd = ScreenCapture.find_window(window_name)
+        ScreenCapture.user32.SetProcessDPIAware()
+        hwnd = ScreenCapture.user32.FindWindowW(None, window_name)
+        # hwnd = win32gui.FindWindow(None, window_name)
+
+        win32gui.ShowWindow(hwnd, win32con.SW_MINIMIZE)
+        # Restore the window if it is minimized or maximized
+        win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
+
+        # win32gui.BringWindowToTop(hwnd)
+        win32gui.SetActiveWindow(hwnd)
+        win32gui.SetForegroundWindow(hwnd)
+
         left, top, right, bottom, width, height = ScreenCapture._get_window_dimensions(hwnd)
         a_ratio = width / height
-        target_width = int(target_height * a_ratio)
+        target_width = round(target_height * a_ratio)
 
         if align == Align.LEFT:
-            win32gui.MoveWindow(hwnd, 0, 0, target_width, target_height, True)
+            x, y = 0, 0
         elif align == Align.CENTER:
-            screen_width = win32api.GetSystemMetrics(0)
-            screen_height = win32api.GetSystemMetrics(1)
-            print(f"Screen width: {screen_width}, Screen height: {screen_height}")
-            win32gui.MoveWindow(hwnd, (screen_width - target_width) // 2, (screen_height -
-                                target_height) // 2, target_width, target_height, True)
+            screen_width = win32api.GetSystemMetrics(win32con.SM_CXSCREEN)
+            screen_height = win32api.GetSystemMetrics(win32con.SM_CYSCREEN)
+            x = (screen_width - target_width) // 2
+            y = (screen_height - target_height) // 2
         elif align == Align.RIGHT:
-            screen_width = win32api.GetSystemMetrics(0)
-            win32gui.MoveWindow(hwnd, screen_width - target_width, 0, target_width, target_height, True)
+            screen_width = win32api.GetSystemMetrics(win32con.SM_CXSCREEN)
+            x = screen_width - target_width
+            y = 0
         elif align == Align.NONE:
-            win32gui.MoveWindow(hwnd, left, top, target_width, target_height, True)
+            x, y = left, top
         else:
             raise ValueError(f"Invalid alignment: {align} (expected: Align.LEFT, Align.CENTER, Align.RIGHT, Align.NONE)")
+
+        # win32gui.MoveWindow(hwnd, x, y, target_width, target_height, True)
+        ScreenCapture.user32.SetWindowPos(hwnd, None, x, y, target_width, target_height,
+                                          win32con.SWP_NOZORDER | win32con.SWP_NOACTIVATE | win32con.SWP_SHOWWINDOW | win32con.SWP_FRAMECHANGED)
 
     @staticmethod
     def list_window_names():

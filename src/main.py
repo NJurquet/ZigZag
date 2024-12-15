@@ -1,4 +1,5 @@
 import cv2
+import os
 from time import time
 
 from config import WINDOW_NAME, VISION_EN, Align
@@ -9,7 +10,7 @@ from ui import DrawingManager
 
 
 def main():
-    ScreenCapture.set_window_pos_size(WINDOW_NAME, 640, Align.LEFT)
+    ScreenCapture.set_window_pos_size(WINDOW_NAME, 1200, Align.NONE)
 
     fps_list = []
     loop_time = time()
@@ -33,13 +34,13 @@ def main():
 
             cv2.imshow("ZigZag Vision", frame)
 
-        # Exit when 'q' key is pressed
         key = cv2.waitKey(1)
+        # Exit when 'q' key is pressed
         if key == ord("q"):
             cv2.destroyAllWindows()
             break
         elif key == ord("s"):
-            cv2.imwrite("screenshot.jpg", frame)
+            cv2.imwrite(os.path.join("images", "screenshot.jpg"), frame)
 
 
 if __name__ == "__main__":
