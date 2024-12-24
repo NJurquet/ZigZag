@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from config import Colors
+from ..config import Colors
 
 
 class DrawingManager:

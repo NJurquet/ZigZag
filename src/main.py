@@ -2,11 +2,11 @@ import cv2
 import os
 from time import time
 
-from config import WINDOW_NAME, VISION_EN, Align
+from .config import WINDOW_NAME, VISION_EN, Align
 
-from capture import ScreenCapture
-from detection import Detector
-from ui import DrawingManager
+from .capture.screen_capture import ScreenCapture
+from .detection.detector import Detector
+from .ui.drawing_manager import DrawingManager
 
 
 def main():
@@ -16,7 +16,7 @@ def main():
     loop_time = time()
     while True:
         frame = ScreenCapture.capture_window(WINDOW_NAME)
-        # x, y, r = Detector.detect_ball(frame)
+        x, y, r = Detector.detect_ball(frame)
         # lines = Detector.detect_path_edges(frame)
 
         if VISION_EN:

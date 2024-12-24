@@ -5,7 +5,7 @@ import win32con
 import win32gui
 import win32ui
 
-from config import Align
+from ..config import Align
 
 
 class ScreenCapture:

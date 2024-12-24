@@ -1,13 +1,15 @@
 import cv2
 import numpy as np
 
+from ..utils import crop_centered
+
 
 class Detector:
     @staticmethod
     def detect_ball(frame: np.ndarray) -> tuple[int, int, int]:
         # Find the ball considering a particular region of the frame with HoughCircles
         frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
-        cropped_frame = frame[100:400, 100:400]  # TODO: function from utils.py
+        cropped_frame = crop_centered(frame, 0.48, 0.15)
         gray = cv2.cvtColor(cropped_frame, cv2.COLOR_BGR2GRAY)
 
         height = gray.shape[0]
@@ -41,9 +43,10 @@ class Detector:
 if __name__ == "__main__":
     frame = cv2.imread("images/game_sample_1.jpg")
     frame2 = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
-    cv2.imshow("ZigZag Vision", frame2)
     x, y, r = Detector.detect_ball(frame)
+    cv2.circle(frame2, (x, y+240), r, (0, 255, 0), 2)
     print(f"Ball position: {x=}, {y=}, {r=}")
+    cv2.imshow("ZigZag Vision", frame2)
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
