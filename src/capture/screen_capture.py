@@ -114,7 +114,6 @@ class ScreenCapture:
         `tuple[int, int, int, int, int, int]`
             The dimensions of the window in the order: left, top, right, bottom, width, height.
         """
-        # Equivalent to "win32gui.GetWindowRect(hwnd)" for DPI
         left, top, right, bottom = win32gui.GetWindowRect(hwnd)
         width = right - left
         height = bottom - top
