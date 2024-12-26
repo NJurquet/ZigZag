@@ -5,7 +5,7 @@ import win32con
 import win32gui
 import win32ui
 
-from ..config import Align
+from ..constants import Align
 
 
 class ScreenCapture:
@@ -120,7 +120,7 @@ class ScreenCapture:
         return left, top, right, bottom, width, height
 
     @staticmethod
-    def set_window_pos_size(window_name: str, target_height: int, align: Align = Align.NONE) -> None:
+    def set_window_pos_size(window_name: str, target_height: int = 1200, align: Align = Align.NONE) -> None:
         """
         Sets the window with the specified name to the specified height and aligns it accordingly.
 
@@ -128,8 +128,8 @@ class ScreenCapture:
         ----------
         `window_name` : `str`
             The name of the window to set the size of.
-        `target_height` : `int`
-            The target height of the window in pixels.
+        `target_height` : `int`, optional
+            The target height of the window in pixels, by default `1200`
         `align` : `Align`, optional
             Window alignment relative to the screen. If set to `Align.NONE`, the window will keep its current position, by default `Align.NONE`
 

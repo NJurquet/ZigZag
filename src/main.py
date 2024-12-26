@@ -2,7 +2,8 @@ import cv2
 import os
 from time import time
 
-from .config import WINDOW_NAME, VISION_EN, Align
+from .config import WINDOW_NAME, VISION_EN, WINDOW_HEIGHT, PROCESSING_DELAY
+from .constants import Align
 
 from .capture.screen_capture import ScreenCapture
 from .detection.detector import Detector
@@ -10,10 +11,9 @@ from .ui.drawing_manager import DrawingManager
 
 
 def main():
-    ScreenCapture.set_window_pos_size(WINDOW_NAME, 1200, Align.NONE)
+    ScreenCapture.set_window_pos_size(WINDOW_NAME, WINDOW_HEIGHT, Align.NONE)
 
     START_TIME = time()
-    PROCESSING_DELAY = 100  # milliseconds
     fps_list = []
     loop_time = time()
     while True:
