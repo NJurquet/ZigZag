@@ -1,5 +1,11 @@
 import cv2
 import numpy as np
+import math
+
+from ..constants import Direction
+
+from .detector import Detector
+from ..utils import isometric_front_point
 
 
 def nothing(x):
@@ -142,10 +148,44 @@ def adjust_circles(frame_path: str):
     cv2.destroyAllWindows()
 
 
+def adjust_ball_edge_distance(frame_path: str):
+    cv2.namedWindow("Trackbars")
+    cv2.resizeWindow("Trackbars", 400, 100)
+    cv2.createTrackbar("hrzt dist", "Trackbars", 60, 100, nothing)
+
+    while True:
+        frame = cv2.imread(frame_path)
+        frame_resized = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
+        x, y, r = Detector.detect_ball(frame)
+        x, y = x // 2, y // 2
+
+        height = frame_resized.shape[0]
+        horizontal_distance = cv2.getTrackbarPos("hrzt dist", "Trackbars") / 1000
+        horizontal_distance = int(height * horizontal_distance)
+        # compute isometric position with horizontal distance
+        iso_x_left, iso_y = isometric_front_point((x, y), horizontal_distance, Direction.LEFT)
+        iso_x_right, iso_y = isometric_front_point((x, y), horizontal_distance, Direction.RIGHT)
+
+        # Right edge distance
+        cv2.circle(frame_resized, (int(x + horizontal_distance), int(y)), radius=3, color=(0, 0, 255), thickness=-1)
+        cv2.circle(frame_resized, (iso_x_right, iso_y), radius=3, color=(0, 0, 255), thickness=-1)
+        # Left edge distance
+        cv2.circle(frame_resized, (int(x - horizontal_distance), int(y)), radius=3, color=(0, 0, 255), thickness=-1)
+        cv2.circle(frame_resized, (iso_x_left, iso_y), radius=3, color=(0, 0, 255), thickness=-1)
+
+        cv2.imshow("Frame", frame_resized)
+
+        if cv2.waitKey(1) & 0xFF == ord("q"):
+            break
+
+    cv2.destroyAllWindows()
+
+
 if __name__ == "__main__":
     # adjust_diamonds("images/game_sample_1.jpg")
     # adjust_diamonds("images/game_sample_2.jpg")
     # adjust_diamonds("images/game_sample_3.jpg")
     # adjust_circles("images/game_sample_1.jpg")
-    adjust_circles("images/game_sample_2.jpg")
+    # adjust_circles("images/game_sample_2.jpg")
     # adjust_circles("images/game_sample_3.jpg")
+    adjust_ball_edge_distance("images/game_sample_2.jpg")
