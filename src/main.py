@@ -20,7 +20,7 @@ def main():
         # lines = Detector.detect_path_edges(frame)
 
         if VISION_EN:
-            # DrawingManager.draw_ball(frame, x, y, r)
+            DrawingManager.draw_ball(frame, x, y, r)
             # DrawingManager.draw_path_edges(frame, lines)
 
             # Compute and display average FPS

@@ -7,7 +7,7 @@ from ..config import Colors
 class DrawingManager:
     @staticmethod
     def draw_ball(img: np.ndarray, x: int, y: int, r: int) -> None:
-        cv2.circle(img, (x, y), r, Colors.BALL_DRAWING_COLOR.value, 4)
+        cv2.circle(img, (x, y), r, Colors.BALL_DRAWING_COLOR.value, 2)
 
     @staticmethod
     def draw_path_edges(img: np.ndarray, lines: list) -> None:

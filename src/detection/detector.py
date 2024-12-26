@@ -8,8 +8,9 @@ class Detector:
     @staticmethod
     def detect_ball(frame: np.ndarray) -> tuple[int, int, int]:
         # Find the ball considering a particular region of the frame with HoughCircles
-        frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
-        cropped_frame = crop_centered(frame, 0.48, 0.15)
+        resize_factor = 2
+        frame = cv2.resize(frame, (0, 0), fx=1/resize_factor, fy=1/resize_factor)
+        cropped_frame, crop_y1, _ = crop_centered(frame, 0.48, 0.15)
         gray = cv2.cvtColor(cropped_frame, cv2.COLOR_BGR2GRAY)
 
         height = gray.shape[0]
@@ -23,10 +24,13 @@ class Detector:
         circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, dp=1, minDist=min_dist,
                                    param1=20, param2=15,
                                    minRadius=min_radius, maxRadius=max_radius)
-        circles = np.around(circles).astype(np.uint16)
 
-        x, y, r = circles[0, 0, :] if circles is not None else (0, 0, 0)
-        return x, y, r
+        x, y, r = 0, 0, 0
+        if circles is not None:
+            circles = np.around(circles).astype(np.uint16)
+            x, y, r = circles[0, 0, :]
+
+        return x * resize_factor, (y + crop_y1) * resize_factor, r * resize_factor
 
     @staticmethod
     def detect_path_edges(frame: np.ndarray) -> list:
@@ -44,9 +48,9 @@ if __name__ == "__main__":
     frame = cv2.imread("images/game_sample_1.jpg")
     frame2 = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
     x, y, r = Detector.detect_ball(frame)
-    cv2.circle(frame2, (x, y+240), r, (0, 255, 0), 2)
+    cv2.circle(frame, (x, y), r, (0, 255, 0), 2)
     print(f"Ball position: {x=}, {y=}, {r=}")
-    cv2.imshow("ZigZag Vision", frame2)
+    cv2.imshow("ZigZag Vision", frame)
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
