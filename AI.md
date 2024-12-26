@@ -124,3 +124,55 @@ def adjust_circles(frame_path: str):
 if __name__ == "__main__":
     adjust_circles("images/game_sample_1.jpg")
 ```
+
+### Multiplication & offset of lines coordinates
+
+**Prompt:**
+
+```
+`detect_path_edges()` function resizes the frame and crops it for processing purposes.
+The lines found with `HoughLinesP` have coordinates in the cropped & resized frame.
+Give a solution to return lines in the initial frame coordinates in a optimized way (preferably without looping all the lines).
+```
+
+**Response:**
+
+```py
+import cv2
+import numpy as np
+
+from ..utils import crop_centered
+
+
+class Detector:
+    @staticmethod
+    def detect_path_edges(frame: np.ndarray) -> np.ndarray:
+        # Find edges lines considering a particular region of the frame with HoughLinesP
+        resize_factor = 2
+        frame_resized = cv2.resize(frame, (0, 0), fx=1/resize_factor, fy=1/resize_factor)
+        cropped_frame, crop_y1, _ = crop_centered(frame_resized, 0.47, 0.10)
+        hsv = cv2.cvtColor(cropped_frame, cv2.COLOR_BGR2HSV)
+
+        lower_bound = np.array([137, 80, 140])
+        upper_bound = np.array([156, 255, 255])
+        mask = cv2.inRange(hsv, lower_bound, upper_bound)
+        mask = cv2.dilate(mask, np.ones((3, 3), np.uint8), iterations=1)
+
+        edges = cv2.Canny(cropped_frame, threshold1=175, threshold2=350)
+        edges = cv2.bitwise_and(edges, edges, mask=cv2.bitwise_not(mask))
+
+        height = hsv.shape[0]
+        min_line_length = int(height * 25/100)
+        min_line_length = 1 if min_line_length == 0 else min_line_length
+
+        lines = cv2.HoughLinesP(edges, rho=1, theta=np.pi/180, threshold=20, minLineLength=min_line_length, maxLineGap=1)
+
+        if lines is not None:
+            # Convert lines to initial frame coordinates using matrix operations
+            lines = lines.reshape(-1, 4)
+            lines[:, [0, 2]] = lines[:, [0, 2]] * resize_factor
+            lines[:, [1, 3]] = (lines[:, [1, 3]] + crop_y1) * resize_factor
+            lines = lines.reshape(-1, 1, 4)
+
+        return lines
+```

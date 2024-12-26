@@ -21,13 +21,13 @@ def main():
         # Start processing when game starts
         if time() - START_TIME >= PROCESSING_DELAY / 1000:
             x, y, r = Detector.detect_ball(frame)
-            # lines = Detector.detect_path_edges(frame)
+            lines = Detector.detect_path_edges(frame)
 
         if VISION_EN:
             # Start drawing when game starts
             if time() - START_TIME >= PROCESSING_DELAY / 1000:
                 DrawingManager.draw_ball(frame, x, y, r)
-                # DrawingManager.draw_path_edges(frame, lines)
+                DrawingManager.draw_path_edges(frame, lines)
 
             # Compute and display average FPS
             fps = 1 / (time() - loop_time)
