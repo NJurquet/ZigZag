@@ -1,3 +1,3 @@
 # from .screen_capture import ScreenCapture
 
-__all__ = ["ScreenCapture"]
+# __all__ = ["ScreenCapture"]
