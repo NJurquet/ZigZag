@@ -7,7 +7,20 @@ from ..utils import crop_centered
 class Detector:
     @staticmethod
     def detect_ball(frame: np.ndarray) -> tuple[int, int, int]:
-        # Find the ball considering a particular region of the frame with HoughCircles
+        """
+        Detects the ball in the frame using HoughCircles.
+
+        Parameters
+        ----------
+        `frame` : `np.ndarray`
+            The frame to detect the ball in.
+
+        Returns
+        -------
+        `tuple[int, int, int]`
+            The (x, y) coordinates of the ball in the frame and its radius.
+        """
+        # Find the ball in a particular region of the frame
         resize_factor = 2
         frame = cv2.resize(frame, (0, 0), fx=1/resize_factor, fy=1/resize_factor)
         cropped_frame, crop_y1, _ = crop_centered(frame, 0.47, 0.10)
@@ -34,7 +47,20 @@ class Detector:
 
     @staticmethod
     def detect_path_edges(frame: np.ndarray) -> np.ndarray:
-        # Find edges lines considering a particular region of the frame with HoughLinesP
+        """
+        Detects the path edges in the frame using HoughLinesP.
+
+        Parameters
+        ----------
+        `frame` : `np.ndarray`
+            The frame to detect the path edges in.
+
+        Returns
+        -------
+        `np.ndarray`
+            A list of path edges detected in the frame.
+        """
+        # Find edges lines in a particular region of the frame
         resize_factor = 2
         frame = cv2.resize(frame, (0, 0), fx=1/resize_factor, fy=1/resize_factor)
         cropped_frame, crop_y1, _ = crop_centered(frame, 0.47, 0.10)
@@ -51,7 +77,6 @@ class Detector:
 
         lines = cv2.HoughLinesP(edges, rho=1, theta=np.pi/180, threshold=20, minLineLength=min_line_length, maxLineGap=1)
 
-        # Adjust the lines to the original frame (scale & offset) using numpy array / matrix operations
         if lines is not None:
             # Convert lines to initial frame coordinates using matrix operations
             lines = lines.reshape(-1, 4)
@@ -63,6 +88,19 @@ class Detector:
 
     @staticmethod
     def diamond_mask(frame: np.ndarray) -> np.ndarray:
+        """
+        Creates a mask for the pink diamonds in the frame.
+
+        Parameters
+        ----------
+        `frame` : `np.ndarray`
+            The frame to create the mask for.
+
+        Returns
+        -------
+        `np.ndarray`
+            The mask for the pink diamonds in the frame.
+        """
         mask = cv2.inRange(frame, np.array([137, 80, 140]), np.array([156, 255, 255]))
         mask = cv2.dilate(mask, np.ones((3, 3), np.uint8), iterations=1)
         return mask
