@@ -12,16 +12,22 @@ from .ui.drawing_manager import DrawingManager
 def main():
     ScreenCapture.set_window_pos_size(WINDOW_NAME, 1200, Align.NONE)
 
+    START_TIME = time()
+    PROCESSING_DELAY = 100  # milliseconds
     fps_list = []
     loop_time = time()
     while True:
         frame = ScreenCapture.capture_window(WINDOW_NAME)
-        x, y, r = Detector.detect_ball(frame)
-        # lines = Detector.detect_path_edges(frame)
+        # Start processing when game starts
+        if time() - START_TIME >= PROCESSING_DELAY / 1000:
+            x, y, r = Detector.detect_ball(frame)
+            # lines = Detector.detect_path_edges(frame)
 
         if VISION_EN:
-            DrawingManager.draw_ball(frame, x, y, r)
-            # DrawingManager.draw_path_edges(frame, lines)
+            # Start drawing when game starts
+            if time() - START_TIME >= PROCESSING_DELAY / 1000:
+                DrawingManager.draw_ball(frame, x, y, r)
+                # DrawingManager.draw_path_edges(frame, lines)
 
             # Compute and display average FPS
             fps = 1 / (time() - loop_time)
