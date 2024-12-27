@@ -3,9 +3,10 @@ import os
 from time import time
 
 from .config import WINDOW_NAME, VISION_EN, WINDOW_HEIGHT, PROCESSING_DELAY
-from .constants import Align
+from .constants import Align, Direction
 
 from .capture.screen_capture import ScreenCapture
+from .control.action_controller import ActionController
 from .detection.detector import Detector
 from .ui.drawing_manager import DrawingManager
 
@@ -13,6 +14,7 @@ from .ui.drawing_manager import DrawingManager
 def main():
     ScreenCapture.set_window_pos_size(WINDOW_NAME, WINDOW_HEIGHT, Align.NONE)
 
+    direction = Direction.LEFT
     START_TIME = time()
     fps_list = []
     loop_time = time()
@@ -22,6 +24,11 @@ def main():
         if time() - START_TIME >= PROCESSING_DELAY / 1000:
             x, y, r = Detector.detect_ball(frame)
             lines = Detector.detect_path_edges(frame)
+            lines_img = DrawingManager.get_path_edges_image(frame, lines)
+
+            changed_dir = ActionController.decide_action((x, y), lines_img, frame.shape[0], direction)
+            if changed_dir:
+                direction = Direction.RIGHT if direction == Direction.LEFT else Direction.LEFT
 
         if VISION_EN:
             # Start drawing when game starts
