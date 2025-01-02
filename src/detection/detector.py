@@ -68,14 +68,14 @@ class Detector:
 
         mask = Detector.diamond_mask(hsv)
 
-        edges = cv2.Canny(cropped_frame, threshold1=175, threshold2=350)
+        edges = cv2.Canny(cropped_frame, threshold1=190, threshold2=135)
         edges = cv2.bitwise_and(edges, edges, mask=cv2.bitwise_not(mask))
 
         height = hsv.shape[0]
-        min_line_length = int(height * 25/100)
+        min_line_length = int(height * 15/100)
         min_line_length = 1 if min_line_length == 0 else min_line_length
 
-        lines = cv2.HoughLinesP(edges, rho=1, theta=np.pi/180, threshold=20, minLineLength=min_line_length, maxLineGap=1)
+        lines = cv2.HoughLinesP(edges, rho=1, theta=np.pi/180, threshold=19, minLineLength=min_line_length, maxLineGap=1)
 
         if lines is not None:
             # Convert lines to initial frame coordinates using matrix operations
@@ -101,7 +101,7 @@ class Detector:
         `np.ndarray`
             The mask for the pink diamonds in the frame.
         """
-        mask = cv2.inRange(frame, np.array([137, 80, 140]), np.array([156, 255, 255]))
+        mask = cv2.inRange(frame, np.array([153, 96, 175]), np.array([156, 255, 255]))
         mask = cv2.dilate(mask, np.ones((3, 3), np.uint8), iterations=1)
         return mask
 
