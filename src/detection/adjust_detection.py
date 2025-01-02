@@ -157,7 +157,7 @@ def adjust_ball_edge_distance(frame_path: str):
         frame = cv2.imread(frame_path)
         frame_resized = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
         x, y, r = Detector.detect_ball(frame)
-        x, y = x // 2, y // 2
+        x, y = x // 2, y // 2 + r//2
 
         height = frame_resized.shape[0]
         horizontal_distance = cv2.getTrackbarPos("hrzt dist", "Trackbars") / 1000
@@ -172,6 +172,8 @@ def adjust_ball_edge_distance(frame_path: str):
         # Left edge distance
         cv2.circle(frame_resized, (int(x - horizontal_distance), int(y)), radius=3, color=(0, 0, 255), thickness=-1)
         cv2.circle(frame_resized, (iso_x_left, iso_y), radius=3, color=(0, 0, 255), thickness=-1)
+
+        cv2.circle(frame_resized, (x, y - r//2), r//2, (0, 255, 0), 2)
 
         cv2.imshow("Frame", frame_resized)
 
