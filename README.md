@@ -105,12 +105,38 @@ python -m src.main
 > [!NOTE]
 > The window should automatically be resized to `WINDOW_HEIGHT` provided in the `config.py` file, and the mouse be moved to the center of the window.
 
+## Goals
+
+1. Process a frame image so it detects the ball and path edges.
+
+2. Process the real-time game screen so it detects the ball and path edges.
+
+3. Be able to simulate a click that results from the ball being close to an edge.
+
+4. Have an average FPS of at least 30 with vision window enabled and when the PC is charging.
+
+5. Achieve an average score of 500 points.
+
+6. Achieve a score of 1000 points.
+
+7. The game window should be captured no matter its initial position or size, and without causing more disturbances.
+
+8. The bot should meet the 500 average points objective on any Windows computer, regardless of its performance or resolution.
+
+9. The bot should be robust and give reproducible results. It should be independant to time, randomness, and other external factors.
+
 ## Strategy
 
-1. Detect the player ball and draw a circle with OpenCV.
-2. Detect path edges and draw the lines with OpenCV.
-3. Find optimal parameters & filter detected objects to keep the necessary ones.
-4. If the ball is close enough to the corresponding edge, simulate a click.
+1. Find the emulator window, resize it and move the mouse to its center.
+2. Capture the window using DPI awareness for being able to capture DPI aware applications, and for screen scale independence.
+3. Find optimal detection parameters & mask out interfering objects to keep the necessary ones.
+4. Detect the player ball and draw a circle on the frame with OpenCV.
+5. Detect path edges and draw the lines on the frame with OpenCV.
+6. Use 2 points for edge proximity detection: horizontal front point & isometric front point. If the ball is close enough to a detected edge, it simulates a click.
+7. When changing direction, vertically mirror the 2 points to only detect one side of the edges lines.
+8. Also simulate a click when the white background is detected, in case edges are not detected properly.
+9. All or most calculations are performed using matrix operations or Numpy arrays for processing time optimization.
+10. Every position, distance or size are calculated in relative units to the screen height for window size & screen resolution independence.
 
 ## Difficulties
 
@@ -118,28 +144,31 @@ python -m src.main
 
 As we progress through one game, the theme will randomly change color. It is also possible for the player to choose a ball skin/color.
 
-Any color-based processing will therefore be quite limited.
+Any color-based processing will therefore be very limited.
 
 ### Precise detection
 
-OpenCV might not find all edges or perfect lines. It is therefore a must to find a way to still be able to check if the ball is near the edge or not.
+OpenCV might not find all edges or perfect lines.
+It is therefore a must to find a way to still be able to check if the ball is near the edge or not.
 
 ### Diamonds
 
 Pink diamonds are not part of the game logic but are still isometric shapes made up from lines.
-They will therefore interfere with lines detection and maybe cause unwanted change in ball direction.
+They will therefore interfere with lines detection and may cause unwanted change in ball direction.
 
 ### Real-time game
 
-Objects detection, screen processing & actions must be done on a moving screen image with minimal lag.
-Processing and computations must be fast to avoid impacting gameplay.
+Objects detection, screen processing & actions are done on a real-time window image.
+These operations takes time and if not optimized, will cause the bot to have a low reaction time, resulting in a delay in the ball direction change or in a failing edge detection.
 
 ### Window capture
 
-This program is meant to be efficient and reproducible. So, the game window position should be independent of the resulting performance of the program.
+The game window capture may also introduce disturbances or noise that can affect performance or gameplay.
+If the window is not captured correctly, for example if the window has unexpected bars or borders, the bot will not be able to detect the ball/edges correctly.
 
-The game window capture must also not introduce disturbances or noise that can affect performance or gameplay.
+The window will not be placed at the exact same position every time, so capturing the window based on its position will not work.
 
 ### Computer independence
 
-The program should work properly on every computer, whether it has good/bad performance, high/low resolution or runs on Windows/macOS.
+The bot might run on computers with different/lower performance, and so every lag, glitch or processing time might take longer.
+Computers also have different screen resolutions and scaling, so using fixed pixel sizes and positions will cause unexpected results or being out of the screen.
