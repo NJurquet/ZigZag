@@ -33,8 +33,7 @@ Considering it is a mobile game, an Android emulator (eg. Bluestacks, LDPlayer) 
 The bot detects the ball and path edges, then simulates a click when the ball is close to an edge.
 This bot is implemented to get all the score achievements and the highest score possible.
 
-> **Note**:
->
+> [!NOTE]
 > The bot is only working on **Windows** at the moment, and has been tested on **Visual Studio Code** (even though it should work on any IDE) and **Bluestacks** Android emulator.
 
 ## Depedencies
@@ -54,6 +53,7 @@ This project uses depedencies that require `Python 3.10` or above.
 
 ## Installation
 
+> [!WARNING]
 > **MacOS** is not supported at the moment.
 
 1. Clone the repository and navigate to the project root folder `ZigZag`:
@@ -87,6 +87,9 @@ pip install -r requirements.txt
 python -m src.capture.screen_capture
 ```
 
+> [!TIP]
+> Set `VISION_EN` to `False` to minimize the time used for frame drawing and display.
+
 8. Make sure you have done the following before running the bot for the best results:
 
     - Have the game on the main screen
@@ -99,6 +102,7 @@ python -m src.capture.screen_capture
 python -m src.main
 ```
 
+> [!NOTE]
 > The window should automatically be resized to `WINDOW_HEIGHT` provided in the `config.py` file, and the mouse be moved to the center of the window.
 
 ## Strategy
