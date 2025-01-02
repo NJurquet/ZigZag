@@ -11,16 +11,18 @@ class DrawingManager:
 
     @staticmethod
     def draw_path_edges(img: np.ndarray, lines: np.ndarray) -> None:
-        for line in lines:
-            x1, y1, x2, y2 = line[0]
-            cv2.line(img, (x1, y1), (x2, y2), Colors.EDGE_DRAWING_COLOR.value, 3)
+        if lines is not None:
+            for line in lines:
+                x1, y1, x2, y2 = line[0]
+                cv2.line(img, (x1, y1), (x2, y2), Colors.EDGE_DRAWING_COLOR.value, 3)
 
     @staticmethod
     def get_path_edges_image(img: np.ndarray, lines: np.ndarray) -> np.ndarray:
         lines_img = np.zeros_like(img)
-        for line in lines:
-            x1, y1, x2, y2 = line[0]
-            cv2.line(lines_img, (x1, y1), (x2, y2), (255, 255, 255), 3)
+        if lines is not None:
+            for line in lines:
+                x1, y1, x2, y2 = line[0]
+                cv2.line(lines_img, (x1, y1), (x2, y2), (255, 255, 255), 3)
         return lines_img
 
     @staticmethod
