@@ -17,7 +17,7 @@ class Actions:
         pyautogui.click(x, y)
 
     @staticmethod
-    def move_to(x: int, y: int) -> None:
+    def move_mouse_to(x: int, y: int) -> None:
         """
         Moves the mouse to the specified coordinates.
 
