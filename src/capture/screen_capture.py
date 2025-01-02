@@ -100,6 +100,25 @@ class ScreenCapture:
         return hwnd
 
     @staticmethod
+    def get_window_center(window_name: str) -> tuple[int, int]:
+        """
+        Gets the center coordinates of the window with the specified name.
+
+        Parameters
+        ----------
+        `window_name` : `str`
+            The name of the window to get the center coordinates of.
+
+        Returns
+        -------
+        `tuple[int, int]`
+            The center coordinates of the window in the order: x, y.
+        """
+        hwnd = ScreenCapture.find_window(window_name)
+        left, top, right, bottom, width, height = ScreenCapture._get_window_dimensions(hwnd)
+        return (left + right) // 2, (top + bottom) // 2
+
+    @staticmethod
     def _get_window_dimensions(hwnd: int) -> tuple[int, int, int, int, int, int]:
         """
         Gets the dimensions of the window with the specified handle.
