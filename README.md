@@ -36,6 +36,9 @@ This bot is implemented to get all the score achievements and the highest score 
 > [!NOTE]
 > The bot is only working on **Windows** at the moment, and has been tested on **Visual Studio Code** (even though it should work on any IDE) and **Bluestacks 5** Android emulator.
 
+> [!NOTE]
+> A view of AI usage whithin the project can be found in the [AI.md](AI.md) file.
+
 ## Depedencies
 
 This project uses depedencies that require `Python 3.10` or above.
