@@ -7,16 +7,16 @@
 
 ### Game
 
-**ZigZag** is a popular mobile game with over 50M downloads on the Google Play Store.
-The game is simple: the player controls a ball that moves on an isometric zigzag path and changes direction when the player tap on the screen.
-A direction change will therefore move the ball diagonally to the left or right.
-The goal is to stay on the path as long as possible without falling off the edges and collect as much diamonds as possible.
+**ZigZag** is a popular mobile game with over 50M downloads on the _Google Play Store_.
+The game is simple: players control a ball moving along an isometric zigzag path and changing its direction by tapping on the screen.
+Each tap causes the ball to move diagonally to the left or right.
+The primary objective is to stay on the path as long as possible without falling off the edges while collecting diamonds found along the way.
 
-Each tap/turn will increase the score by 1.
-When picking up a diamond, the score will increase by 2.
-These diamonds can then be used to unlock new ball skins.
+The game incorporates a scoring system where each direction change increases the score by 1 point.
+When collecting a diamond, the score will increase by 2.
+Diamonds can also be used to unlock various ball skins, adding a customization element to the game. 
 
-The game has 5 Google Play Games achievements:
+The game has 5 _Google Play Games_ achievements:
 
 -   Get a score of 50 points! (Uncommon)
 -   Get a score of 125 points! (Uncommon)
@@ -26,12 +26,12 @@ The game has 5 Google Play Games achievements:
 
 ### Project
 
-This project aims to create a bot that will play the game for the player using `Python` image processing.
-`OpenCV` & `Numpy` are used for every image processing task.
-Considering it is a mobile game, an Android emulator (eg. Bluestacks, LDPlayer) must be used to run the game on a computer.
+This project aims to create an autonomous bot to play the game on behalf of the player using `Python` image processing.
+`OpenCV` and `NumPy` are used for every image processing task.
+Since ZigZag is a mobile game, it is run on a computer using an Android emulator such as _Bluestacks_ or _LDPlayer_.
 
-The bot detects the ball and path edges, then simulates a click when the ball is close to an edge.
-This bot is implemented to get all the score achievements and the highest score possible.
+The bot is designed to detect the ball and path edges in real time and simulating screen taps when the ball approaches an edge.
+The ultimate goal is to enable the bot to consistently achieve all game score milestones and maximize the high score potential to eventually reach the actual limit of 100k points.
 
 > [!NOTE]
 > The bot is only working on **Windows** at the moment, and has been tested on **Visual Studio Code** (even though it should work on any IDE) and **Bluestacks 5** Android emulator.
