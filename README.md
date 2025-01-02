@@ -34,7 +34,7 @@ The bot detects the ball and path edges, then simulates a click when the ball is
 This bot is implemented to get all the score achievements and the highest score possible.
 
 > [!NOTE]
-> The bot is only working on **Windows** at the moment, and has been tested on **Visual Studio Code** (even though it should work on any IDE) and **Bluestacks** Android emulator.
+> The bot is only working on **Windows** at the moment, and has been tested on **Visual Studio Code** (even though it should work on any IDE) and **Bluestacks 5** Android emulator.
 
 ## Depedencies
 
@@ -69,7 +69,7 @@ pip install -r requirements.txt
 ```
 
 3. Install an Android emulator on your computer.
-   [Bluestacks](https://www.bluestacks.com/) or [LDPlayer](https://www.ldplayer.net/) are recommended.
+   [Bluestacks 5](https://www.bluestacks.com/) or [LDPlayer](https://www.ldplayer.net/) are recommended.
 
 4. Go to the Google Play Store, sign in with your Google account and download **ZigZag**.
 
