@@ -143,35 +143,38 @@ python -m src.main
 
 ## Difficulties
 
-### Changing colors
+### Dynamic color changes
 
-As we progress through one game, the theme will randomly change color. It is also possible for the player to choose a ball skin/color.
+As the player progresses through one game, the theme colors transition randomly within a predefined palette.
+Additionally, the ball can be customized with various skins, each having unique color patterns.
+This project cannot therefore rely on color-based detection methods to identify game elements.
 
-Any color-based processing will therefore be very limited.
+### Accuracy in detection
 
-### Precise detection
+OpenCV-based image processing is prone to imperfections in detecting edges or circles.
+Insufficient detection accuracy could result in the ball being lost or misidentified, or the path edge detection failing for a set of time.
+Such errors may lead to the ball falling off the edges.
 
-OpenCV might not find all edges or perfect lines.
-It is therefore a must to find a way to still be able to check if the ball is near the edge or not.
+### Diamonds interference
 
-### Diamonds
-
-Pink diamonds are not part of the game logic but are still isometric shapes made up from lines.
-They will therefore interfere with lines detection and may cause unwanted change in ball direction.
+Although diamonds are important to collect to reach higher scores, they are not part of the game mechanics.
+These pink diamonds are isometric shapes composed of lines that could interfere with lines detection and may cause unwanted change in ball direction.
 
 ### Real-time game
 
-Objects detection, screen processing & actions are done on a real-time window image.
-These operations takes time and if not optimized, will cause the bot to have a low reaction time, resulting in a delay in the ball direction change or in a failing edge detection.
+Objects detection, screen processing and actions are performed in real-time using the live game window.
+Without proper optimization, these operations could lead to high latency and low reaction times, resulting in delayed direction changes or missed edge detections, negatively affecting performance.
 
 ### Window capture
 
-The game window capture may also introduce disturbances or noise that can affect performance or gameplay.
-If the window is not captured correctly, for example if the window has unexpected bars or borders, the bot will not be able to detect the ball/edges correctly.
+The game window capture may introduce disturbances or noise that can affect performance or gameplay.
+If the window is not captured correctly, the bot will not be able to properly detect the ball/edges.
+For example, variations in some emulator configurations such as UI elements (e.g., borders or sidebars) may cause the bot to misinterpret the game frame.
 
 The window will not be placed at the exact same position every time, so capturing the window based on its position will not work.
 
 ### Computer independence
 
-The bot might run on computers with different/lower performance, and so every lag, glitch or processing time might take longer.
-Computers also have different screen resolutions and scaling, so using fixed pixel sizes and positions will cause unexpected results or being out of the screen.
+The bot is intended to run on computers with diverse performance, screen resolutions and scaling.
+Variability in system performance may result in more delays, glitches or processing inconsistencies.
+Fixed pixel-based sizes and positions will also cause failings in game elements detection or being out of the screen area.
