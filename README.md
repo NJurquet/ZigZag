@@ -83,7 +83,7 @@ pip install -r requirements.txt
 
 7. Change the `src/config.py` file to configure the project as needed.
 
-    Make sure to set the `WINDOW_NAME` constant to your game window name, and `VISION_EN` to `False` to disable the image processing window.
+    Make sure to set the `WINDOW_NAME` constant to your game window name, and `VISION_EN` to either `True` or `False` depending on if you want to enable or disable the image processing window.
     A list of all opened windows can be obtained by running:
 
 ```bash
